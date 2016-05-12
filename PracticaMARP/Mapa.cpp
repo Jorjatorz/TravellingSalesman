@@ -50,15 +50,15 @@ Mapa::Mapa(int n, int ciudadInicial, bool permutar)
 			assert(false); //La ciudad inicial tiene que estar entre las n primeras ciudades
 		}
 
-		_ciudadesElegidarArray = new int[n];
+		_ciudadesElegidasArray = new int[n];
 		for (int i = 0; i < n; i++)
 		{
 			if (i != ciudadInicial)
 			{
-				_ciudadesElegidarArray[i + 1] = i;
+				_ciudadesElegidasArray[i + 1] = i;
 			}
 		}
-		_ciudadesElegidarArray[0] = ciudadInicial;
+		_ciudadesElegidasArray[0] = ciudadInicial;
 	}
 	else
 	{
@@ -66,7 +66,7 @@ Mapa::Mapa(int n, int ciudadInicial, bool permutar)
 		bool elegida[28];
 		memset(elegida, false, 28);
 
-		_ciudadesElegidarArray[0] = ciudadInicial;
+		_ciudadesElegidasArray[0] = ciudadInicial;
 		elegida[ciudadInicial] = true;
 		for (int i = 1; i < n; i++)
 		{
@@ -76,7 +76,7 @@ Mapa::Mapa(int n, int ciudadInicial, bool permutar)
 				c = rand() % 28;
 			}
 
-			_ciudadesElegidarArray[i] = c;
+			_ciudadesElegidasArray[i] = c;
 			elegida[c] = true;
 		}
 	}
@@ -85,9 +85,22 @@ Mapa::Mapa(int n, int ciudadInicial, bool permutar)
 
 Mapa::~Mapa()
 {
+	delete[] _ciudadesElegidasArray;
 }
 
-int Mapa::getDistanciaEntreCiudades(int ciudad1, int ciudad2)
+int Mapa::getDistanciaEntreCiudades(int ciudad1, int ciudad2) const
+{
+	//Las ciudades tiene que estar en el rango de ciudades elegidas
+	if ((ciudad1 > _n) || (ciudad2 > _n))
+	{
+		std::cout << "ERROR: Esa ciudad esta fuera de los limites del mapa actual" << std::endl;
+		assert(false);
+	}
+
+	return getDistanciaEntreCiudadesAUX(_ciudadesElegidasArray[ciudad1], _ciudadesElegidasArray[ciudad2]);
+}
+
+int Mapa::getDistanciaEntreCiudadesAUX(int ciudad1, int ciudad2) const
 {
 	int distancia;
 	//Si las ciudades son iguales, devolver 0
@@ -105,4 +118,13 @@ int Mapa::getDistanciaEntreCiudades(int ciudad1, int ciudad2)
 	}
 
 	return distancia;
+}
+
+void Mapa::ciudadesToStringArray(std::string& recorridoCiudades, int* ciudadesRecorridas) const
+{
+	recorridoCiudades = "";
+	for (int i = 0; i < _n; i++)
+	{
+		recorridoCiudades += getNombreCiudad(_ciudadesElegidasArray[ciudadesRecorridas[i]]);
+	}
 }
