@@ -44,12 +44,6 @@ Mapa::Mapa(int n, int ciudadInicial, bool permutar)
 	//Si no se permuta, elegir las n primero ciudades
 	if (!permutar)
 	{
-		if (n >= ciudadInicial)
-		{
-			std::cout << "ERROR: La ciudad inicial tiene que estar entre las n primeras ciudades" << std::endl;
-			assert(false); //La ciudad inicial tiene que estar entre las n primeras ciudades
-		}
-
 		_ciudadesElegidasArray = new int[n];
 		for (int i = 0; i < n; i++)
 		{
@@ -62,16 +56,17 @@ Mapa::Mapa(int n, int ciudadInicial, bool permutar)
 	}
 	else
 	{
+		_ciudadesElegidasArray = new int[n];
 		//Elegimos ciudades aleatoriamente (que no hayan sido elegidas ya)
 		bool elegida[28];
-		memset(elegida, false, 28);
+		memset(elegida, false, 28 * sizeof(bool));
 
 		_ciudadesElegidasArray[0] = ciudadInicial;
 		elegida[ciudadInicial] = true;
 		for (int i = 1; i < n; i++)
 		{
 			int c = rand() % 28;
-			while (elegida[n])
+			while (elegida[c])
 			{
 				c = rand() % 28;
 			}
@@ -93,7 +88,7 @@ int Mapa::getDistanciaEntreCiudades(int ciudad1, int ciudad2) const
 	//Las ciudades tiene que estar en el rango de ciudades elegidas
 	if ((ciudad1 > _n) || (ciudad2 > _n))
 	{
-		std::cout << "ERROR: Esa ciudad esta fuera de los limites del mapa actual" << std::endl;
+		std::cout << "ERROR: Esa ciudad esta fuera de los limites del mapa actual. Ciudad1: " << ciudad1 << " Ciudad2: " << ciudad2 << " N: " << _n << std::endl;
 		assert(false);
 	}
 
@@ -125,6 +120,7 @@ void Mapa::ciudadesToStringArray(std::string& recorridoCiudades, int* ciudadesRe
 	recorridoCiudades = "";
 	for (int i = 0; i < _n; i++)
 	{
-		recorridoCiudades += getNombreCiudad(_ciudadesElegidasArray[ciudadesRecorridas[i]]);
+		recorridoCiudades += getNombreCiudad(_ciudadesElegidasArray[ciudadesRecorridas[i]]) + " -> ";
 	}
+	recorridoCiudades += getNombreCiudad(_ciudadesElegidasArray[ciudadesRecorridas[0]]); //Inicial
 }

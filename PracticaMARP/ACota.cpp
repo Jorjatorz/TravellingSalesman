@@ -1,6 +1,5 @@
 #include "ACota.h"
 
-
 ACota::ACota()
 {
 }

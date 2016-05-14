@@ -11,7 +11,7 @@ public:
 	~ACota_Ingenua_Optimista();
 
 	//Suma la distancia minima de las ciudades aun sin elegir.
-	//Esta distancia minima ha sido calculado anteriormente
+	//Esta distancia minima ha sido calculada anteriormente
 	//O(n)
 	virtual int calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[]) const;
 
