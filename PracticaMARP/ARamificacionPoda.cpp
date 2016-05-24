@@ -5,6 +5,8 @@
 #include "Mapa.h"
 #include "ACota.h"
 #include <iostream>
+#include <time.h>
+#include <functional>
 
 ARamificacionPoda::ARamificacionPoda(const Mapa& mapa, const ACota& optimista, const ACota& pesimita)
 	:_mapa(mapa), _cOptimista(optimista), _cPesimista(pesimita)
@@ -27,6 +29,8 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 	Y.ciudadesUsadas[0] = true;
 
 	informacionToReturn.distanciaOptima = _cPesimista.calcularCoste(Y.distanciaTotal, _mapa.getNumeroDeCiudades(), Y.ciudadesUsadas); //En nuestro problema siempre hay solucion (si no, esto valdria infinito)
+	informacionToReturn.tiempoTotal = clock();
+
 	C.push(Y);
 	while (!C.empty() && C.top().distanciaOptimista <= informacionToReturn.distanciaOptima)
 	{
@@ -57,9 +61,6 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 					if (X.distanciaTotal < informacionToReturn.distanciaOptima) //Al principio, informacionToReturn.distanciaOptima es infinito
 					{
 						informacionToReturn.copiarSolucion(X, _mapa);
-
-						//TODO Borrar esto cuando no sea debug
-						std::cout << "Solucion encontrada: " << informacionToReturn.distanciaOptima << " Nodos explorados: " << informacionToReturn.numNodosExplorados << std::endl;
 					}
 				}
 				else //Si no es solucion
@@ -75,9 +76,6 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 					if (cP < informacionToReturn.distanciaOptima)
 					{
 						informacionToReturn.distanciaOptima = cP;
-
-						//TODO Borrar esto cuando no sea debug
-						std::cout << "Distancia optima por pesimista actualizada: " << informacionToReturn.distanciaOptima << " Nodos explorados: " << informacionToReturn.numNodosExplorados << std::endl;
 					}
 				}
 
@@ -87,6 +85,9 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 			}
 		}
 	}
+
+	informacionToReturn.tiempoTotal = (clock() - informacionToReturn.tiempoTotal) / CLOCKS_PER_SEC;
+	informacionToReturn.tiempoMedio = informacionToReturn.tiempoTotal / informacionToReturn.numNodosExplorados;
 
 	return informacionToReturn;
 }
@@ -103,10 +104,27 @@ void ARamificacionPoda::sInfoAlgoritmo::print()
 	std::cout << "Numero de ciudades recorridas: " << numCiudades << std::endl;
 	std::cout << "Distancia optima: " << distanciaOptima << std::endl;
 	std::cout << "Ciclo de ciudades: " << recorridoCiudades << std::endl;
+	std::cout << "Numero de nodos teoricos a explorar: " << calcularNodos() << std::endl;
 	std::cout << "Numero nodos explorados: " << numNodosExplorados << std::endl;
 	std::cout << "Numero nodos explorados al encontrar el optimo: " << numNodosExploradosOptima << std::endl;
 	std::cout << "Tiempo total del algoritmo: " << tiempoTotal << " segundos." << std::endl;
 	std::cout << "Tiempo medio por nodo explorado: " << tiempoMedio << " segundos." << std::endl;
+}
+
+long long int ARamificacionPoda::sInfoAlgoritmo::calcularNodos()
+{
+	std::function<int(int)> factorial = [&](int n)
+	{
+		return n < 2 ? 1 : n * factorial(n - 1);
+	};
+
+	double sum = 0;
+	for (int i = 1; i < numCiudades; i++)
+	{
+		sum += 1.0 / factorial(i);
+	}
+
+	return factorial(numCiudades - 1) * sum;
 }
 
 ARamificacionPoda::Nodo::Nodo(int numeroCiudades)

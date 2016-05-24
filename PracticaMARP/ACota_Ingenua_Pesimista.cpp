@@ -19,10 +19,10 @@ int ACota_Ingenua_Pesimista::calcularCoste(int distanciaActual, int numCiudades,
 	int suma = distanciaActual;
 	for (int i = 0; i < numCiudades; i++)
 	{
-		if (!ciudadUsada[i])
-		{
+		//if (!ciudadUsada[i])
+		//{
 			suma += _distanciasMaximas[i];
-		}
+		//}
 	}
 
 	return suma;

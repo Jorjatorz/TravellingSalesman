@@ -35,9 +35,10 @@ private:
 
 		struct comparator
 		{
+			//Funcion comparadora para crear una cola de minimos.
 			bool operator()(const Nodo& l, const Nodo& r)
 			{
-				return l.distanciaTotal < r.distanciaTotal;
+				return l.distanciaTotal > r.distanciaTotal;
 			}
 		};
 
@@ -75,6 +76,7 @@ public:
 		void copiarSolucion(Nodo X, const Mapa& mapa);
 
 		void print();
+		long long int calcularNodos();
 	};
 
 	ARamificacionPoda(const Mapa& mapa, const ACota& optimista, const ACota& pesimita);
