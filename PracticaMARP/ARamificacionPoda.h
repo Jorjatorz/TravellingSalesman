@@ -56,7 +56,7 @@ public:
 		int numNodosExplorados; //El numero de nodos que el algoritmo ha explorado
 		int numNodosExploradosOptima; //Numero de nodos que habian sido explorados cuando la solucion optima fue encontrada
 		float tiempoTotal; //Tiempo total que el algoritmo ha tardado en terminar. En segundos
-		float tiempoMedio; //Tiempo medio que dedica el algoritmo en procesar un nodo. (tiempoTotal / numNodosExplorados)
+		float tiempoMedioNodo; //Tiempo medio que dedica el algoritmo en procesar un nodo. (tiempoTotal / numNodosExplorados)
 
 		sInfoAlgoritmo(int n)
 		{
@@ -66,7 +66,7 @@ public:
 			numNodosExplorados = 0;
 			numNodosExploradosOptima = 0;
 			tiempoTotal = 0;
-			tiempoMedio = 0;
+			tiempoMedioNodo = 0;
 		}
 
 		~sInfoAlgoritmo()

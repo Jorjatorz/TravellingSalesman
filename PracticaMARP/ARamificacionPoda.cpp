@@ -72,6 +72,7 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 						C.push(X);
 					}
 
+					X.ciudadesUsadas[i] = false;
 					int cP = _cPesimista.calcularCoste(X.distanciaTotal, _mapa.getNumeroDeCiudades(), X.ciudadesUsadas);
 					if (cP < informacionToReturn.distanciaOptima)
 					{
@@ -87,7 +88,7 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 	}
 
 	informacionToReturn.tiempoTotal = (clock() - informacionToReturn.tiempoTotal) / CLOCKS_PER_SEC;
-	informacionToReturn.tiempoMedio = informacionToReturn.tiempoTotal / informacionToReturn.numNodosExplorados;
+	informacionToReturn.tiempoMedioNodo = informacionToReturn.tiempoTotal / informacionToReturn.numNodosExplorados;
 
 	return informacionToReturn;
 }
@@ -101,14 +102,17 @@ void ARamificacionPoda::sInfoAlgoritmo::copiarSolucion(Nodo X, const Mapa& mapa)
 
 void ARamificacionPoda::sInfoAlgoritmo::print()
 {
+	long long int nodosTeoricos = calcularNodos();
 	std::cout << "Numero de ciudades recorridas: " << numCiudades << std::endl;
 	std::cout << "Distancia optima: " << distanciaOptima << std::endl;
 	std::cout << "Ciclo de ciudades: " << recorridoCiudades << std::endl;
-	std::cout << "Numero de nodos teoricos a explorar: " << calcularNodos() << std::endl;
+	std::cout << "Numero de nodos teoricos a explorar: " << nodosTeoricos << std::endl;
 	std::cout << "Numero nodos explorados: " << numNodosExplorados << std::endl;
 	std::cout << "Numero nodos explorados al encontrar el optimo: " << numNodosExploradosOptima << std::endl;
 	std::cout << "Tiempo total del algoritmo: " << tiempoTotal << " segundos." << std::endl;
-	std::cout << "Tiempo medio por nodo explorado: " << tiempoMedio << " segundos." << std::endl;
+	std::cout << "Tiempo medio por nodo explorado: " << tiempoMedioNodo << " segundos." << std::endl;
+	std::cout << "Tiempo total teorico del algoritmo: " << tiempoMedioNodo * nodosTeoricos << " segundos." << std::endl; //El tiempo medio que ha tardado un nodo por el numero de nodos totales (teoricos) a explorar.
+	std::cout << "Porcentaje mejora en tiempo del algoritmo: " << (1 - (tiempoTotal / (tiempoMedioNodo * nodosTeoricos))) * 100 << " %" << std::endl;
 }
 
 long long int ARamificacionPoda::sInfoAlgoritmo::calcularNodos()
