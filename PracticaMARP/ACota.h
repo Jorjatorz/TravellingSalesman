@@ -6,6 +6,6 @@ class ACota
 public:
 	ACota();
 	~ACota();
-	virtual int calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[]) const = 0;
+	virtual int calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[], int* datosExtra, int& lengthDatosExtra) const = 0;
 };
 

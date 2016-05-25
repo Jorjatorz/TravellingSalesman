@@ -14,7 +14,7 @@ ACota_Ingenua_Optimista::~ACota_Ingenua_Optimista()
 	delete [] _distanciasMinimas;
 }
 
-int ACota_Ingenua_Optimista::calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[]) const
+int ACota_Ingenua_Optimista::calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[], int* datosExtra, int& lengthDatosExtra) const
 {
 	int suma = distanciaActual;
 	for (int i = 0; i < numCiudades; i++)

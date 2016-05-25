@@ -13,7 +13,7 @@ public:
 	//Suma la distancia minima de las ciudades aun sin elegir.
 	//Esta distancia minima ha sido calculada anteriormente
 	//O(n)
-	virtual int calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[]) const;
+	virtual int calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[], int* datosExtra, int& lengthDatosExtra) const;
 
 private:
 	//Dado un mapa, calcula la distancia menor de una ciudad a las demas.

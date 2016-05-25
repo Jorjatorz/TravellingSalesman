@@ -28,7 +28,7 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 	Y.ciudadesRecorridas[0] = 0;
 	Y.ciudadesUsadas[0] = true;
 
-	informacionToReturn.distanciaOptima = _cPesimista.calcularCoste(Y.distanciaTotal, _mapa.getNumeroDeCiudades(), Y.ciudadesUsadas); //En nuestro problema siempre hay solucion (si no, esto valdria infinito)
+	informacionToReturn.distanciaOptima = _cPesimista.calcularCoste(Y.distanciaTotal, _mapa.getNumeroDeCiudades(), Y.ciudadesUsadas, Y.datosExtra, Y.lengthDatosExtra); //En nuestro problema siempre hay solucion (si no, esto valdria infinito)
 	informacionToReturn.tiempoTotal = clock();
 
 	C.push(Y);
@@ -66,14 +66,14 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 				else //Si no es solucion
 				{
 					//Si es prometedor, seguir explorandolo
-					X.distanciaOptimista = _cOptimista.calcularCoste(X.distanciaTotal, _mapa.getNumeroDeCiudades(), X.ciudadesUsadas);
+					X.distanciaOptimista = _cOptimista.calcularCoste(X.distanciaTotal, _mapa.getNumeroDeCiudades(), X.ciudadesUsadas, X.datosExtra, X.lengthDatosExtra);
 					if (X.distanciaOptimista <= informacionToReturn.distanciaOptima)
 					{
 						C.push(X);
 					}
 
 					X.ciudadesUsadas[i] = false;
-					int cP = _cPesimista.calcularCoste(X.distanciaTotal, _mapa.getNumeroDeCiudades(), X.ciudadesUsadas);
+					int cP = _cPesimista.calcularCoste(X.distanciaTotal, _mapa.getNumeroDeCiudades(), X.ciudadesUsadas, X.datosExtra, X.lengthDatosExtra);
 					if (cP < informacionToReturn.distanciaOptima)
 					{
 						informacionToReturn.distanciaOptima = cP;
@@ -140,6 +140,9 @@ ARamificacionPoda::Nodo::Nodo(int numeroCiudades)
 	ciudadesRecorridas = new int[numeroCiudades]; //Array con el orden en el que se tienen que recorrer las ciudades
 	ciudadesUsadas = new bool[numeroCiudades]; //True si esa ciudad ya ha sido explorada
 	memset(ciudadesUsadas, false, numeroCiudades * sizeof(bool));
+
+	datosExtra = nullptr;
+	lengthDatosExtra = 0;
 }
 
 ARamificacionPoda::Nodo::Nodo(const Nodo& aCopiar)
@@ -157,6 +160,21 @@ ARamificacionPoda::Nodo::Nodo(const Nodo& aCopiar)
 		memcpy(ciudadesRecorridas, aCopiar.ciudadesRecorridas, numCiudades * sizeof(int));
 		memcpy(ciudadesUsadas, aCopiar.ciudadesUsadas, numCiudades * sizeof(bool));
 	}
+
+	if (aCopiar.datosExtra != nullptr)
+	{
+		if (datosExtra != nullptr)
+		{
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			lengthDatosExtra = aCopiar.lengthDatosExtra;
+		}
+		else
+		{
+			datosExtra = new int[aCopiar.lengthDatosExtra];
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			lengthDatosExtra = aCopiar.lengthDatosExtra;
+		}
+	}
 }
 
 ARamificacionPoda::Nodo::~Nodo()
@@ -165,6 +183,13 @@ ARamificacionPoda::Nodo::~Nodo()
 	ciudadesRecorridas = nullptr;
 	delete[] ciudadesUsadas;
 	ciudadesUsadas = nullptr;
+	
+	if (datosExtra != nullptr)
+	{
+		delete[] datosExtra;
+		datosExtra = nullptr;
+		lengthDatosExtra = 0;
+	}
 }
 
 ARamificacionPoda::Nodo& ARamificacionPoda::Nodo::operator=(const Nodo& aCopiar)
@@ -181,6 +206,21 @@ ARamificacionPoda::Nodo& ARamificacionPoda::Nodo::operator=(const Nodo& aCopiar)
 	{		
 		memcpy(ciudadesRecorridas, aCopiar.ciudadesRecorridas, numCiudades * sizeof(int));
 		memcpy(ciudadesUsadas, aCopiar.ciudadesUsadas, numCiudades * sizeof(bool));
+	}
+
+	if (aCopiar.datosExtra != nullptr)
+	{
+		if (datosExtra != nullptr)
+		{
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			lengthDatosExtra = aCopiar.lengthDatosExtra;
+		}
+		else
+		{
+			datosExtra = new int[aCopiar.lengthDatosExtra];
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			lengthDatosExtra = aCopiar.lengthDatosExtra;
+		}
 	}
 
 	return *this;

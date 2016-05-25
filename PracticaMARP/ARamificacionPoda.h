@@ -26,6 +26,8 @@ private:
 		int distanciaOptimista;
 		int* ciudadesRecorridas; //Array con el orden en el que se tienen que recorrer las ciudades
 		bool* ciudadesUsadas; //True si esa ciudad ya ha sido explorada
+		int* datosExtra; //Puntero a informacion extra utilizada por el nodo (matriz cota buena)
+		int lengthDatosExtra;
 
 		Nodo(int numeroCiudades);
 		Nodo(const Nodo& aCopiar);
