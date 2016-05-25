@@ -38,7 +38,7 @@ private:
 			//Funcion comparadora para crear una cola de minimos.
 			bool operator()(const Nodo& l, const Nodo& r)
 			{
-				return l.distanciaTotal > r.distanciaTotal;
+				return l.distanciaOptimista > r.distanciaOptimista;
 			}
 		};
 

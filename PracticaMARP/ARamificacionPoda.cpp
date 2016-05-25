@@ -169,6 +169,7 @@ ARamificacionPoda::Nodo::~Nodo()
 
 ARamificacionPoda::Nodo& ARamificacionPoda::Nodo::operator=(const Nodo& aCopiar)
 {
+	//Si la direccion del array es el mismo eso quiere decir que son el mismo nodo.
 	if (this->ciudadesRecorridas == aCopiar.ciudadesRecorridas) return *this;
 
 	numCiudades = aCopiar.numCiudades;
