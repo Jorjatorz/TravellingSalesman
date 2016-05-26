@@ -156,6 +156,9 @@ Nodo::Nodo(const Nodo& aCopiar)
 	ciudadesRecorridas = new int[numCiudades];
 	ciudadesUsadas = new bool[numCiudades];
 
+	datosExtra = nullptr;
+	lengthDatosExtra = 0;
+
 	if ((aCopiar.ciudadesRecorridas != nullptr) && (aCopiar.ciudadesUsadas != nullptr))
 	{
 		memcpy(ciudadesRecorridas, aCopiar.ciudadesRecorridas, numCiudades * sizeof(int));
@@ -166,13 +169,13 @@ Nodo::Nodo(const Nodo& aCopiar)
 	{
 		if (datosExtra != nullptr)
 		{
-			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra * sizeof(int));
 			lengthDatosExtra = aCopiar.lengthDatosExtra;
 		}
 		else
 		{
 			datosExtra = new int[aCopiar.lengthDatosExtra];
-			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra * sizeof(int));
 			lengthDatosExtra = aCopiar.lengthDatosExtra;
 		}
 	}
@@ -218,13 +221,13 @@ Nodo& Nodo::operator=(const Nodo& aCopiar)
 	{
 		if (datosExtra != nullptr)
 		{
-			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra * sizeof(int));
 			lengthDatosExtra = aCopiar.lengthDatosExtra;
 		}
 		else
 		{
 			datosExtra = new int[aCopiar.lengthDatosExtra];
-			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra * sizeof(int));
 			lengthDatosExtra = aCopiar.lengthDatosExtra;
 		}
 	}
