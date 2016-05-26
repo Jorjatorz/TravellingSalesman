@@ -1,11 +1,13 @@
 #pragma once
 
+struct Nodo;
+
 //Interfaz para representar una cota (optimista o pesimista)
 class ACota
 {
 public:
 	ACota();
 	~ACota();
-	virtual int calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[], int* datosExtra, int& lengthDatosExtra) const = 0;
+	virtual int calcularCoste(Nodo& X) const = 0;
 };
 

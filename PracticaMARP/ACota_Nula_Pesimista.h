@@ -7,7 +7,7 @@ public:
 	ACota_Nula_Pesimista();
 	~ACota_Nula_Pesimista();
 
-	virtual int calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[], int* datosExtra, int& lengthDatosExtra) const;
+	virtual int calcularCoste(Nodo& X) const;
 
 };
 

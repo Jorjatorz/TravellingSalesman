@@ -1,5 +1,6 @@
 #include "ACota_Ingenua_Optimista.h"
 
+#include "ARamificacionPoda.h"
 #include "Mapa.h"
 
 ACota_Ingenua_Optimista::ACota_Ingenua_Optimista(const Mapa& map)
@@ -14,16 +15,17 @@ ACota_Ingenua_Optimista::~ACota_Ingenua_Optimista()
 	delete [] _distanciasMinimas;
 }
 
-int ACota_Ingenua_Optimista::calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[], int* datosExtra, int& lengthDatosExtra) const
+int ACota_Ingenua_Optimista::calcularCoste(Nodo& X) const
 {
-	int suma = distanciaActual;
-	for (int i = 0; i < numCiudades; i++)
+	int suma = X.distanciaTotal;
+	for (int i = 0; i < X.numCiudades; i++)
 	{
-		if (!ciudadUsada[i])
+		if (!X.ciudadesUsadas[i])
 		{
 			suma += _distanciasMinimas[i];
 		}
 	}
+	suma += _distanciasMinimas[X.ciudadesRecorridas[X.k]]; //Anadir la distancia minima de la ultima ciudad elegida
 
 	return suma;
 }

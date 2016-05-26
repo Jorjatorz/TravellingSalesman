@@ -9,7 +9,7 @@ public:
 	ACota_Buena_Optimista();
 	~ACota_Buena_Optimista();
 
-	virtual int calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[], int* datosExtra, int& lengthDatosExtra) const;
+	virtual int calcularCoste(Nodo& X) const;
 
 };
 

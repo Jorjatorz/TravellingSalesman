@@ -10,7 +10,7 @@ ACota_Nula_Optimista::~ACota_Nula_Optimista()
 {
 }
 
-int ACota_Nula_Optimista::calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[], int* datosExtra, int& lengthDatosExtra) const
+int ACota_Nula_Optimista::calcularCoste(Nodo& X) const
 {
 	return 0;
 }
