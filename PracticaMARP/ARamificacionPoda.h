@@ -6,6 +6,7 @@
 
 class Mapa;
 class ACota;
+struct Nodo;
 
 //Algoritmo que dado una matriz con la distancia entre ciudades, una cota optimista y una cota pesimista
 //devuelve la distancia minima, el orden de ciudades a recorrer, el tiempo que se ha tardado en total en ejecutarlo
@@ -17,34 +18,6 @@ private:
 	const Mapa& _mapa;
 	const ACota& _cOptimista;
 	const ACota& _cPesimista;
-
-	class Nodo
-	{
-	public:
-		int k;
-		int distanciaTotal; //Coste real de recorrer las ciudades en el orden de ciudadesRecorridas
-		int distanciaOptimista;
-		int* ciudadesRecorridas; //Array con el orden en el que se tienen que recorrer las ciudades
-		bool* ciudadesUsadas; //True si esa ciudad ya ha sido explorada
-
-		Nodo(int numeroCiudades);
-		Nodo(const Nodo& aCopiar);
-		~Nodo();
-
-		Nodo& operator=(const Nodo& aCopiar);
-
-		struct comparator
-		{
-			//Funcion comparadora para crear una cola de minimos.
-			bool operator()(const Nodo& l, const Nodo& r)
-			{
-				return l.distanciaOptimista > r.distanciaOptimista;
-			}
-		};
-
-	private:
-		int numCiudades;
-	};
 
 public:
 
@@ -88,3 +61,31 @@ public:
 
 };
 
+struct Nodo
+{
+public:
+	int numCiudades;
+	int k;
+	int distanciaTotal; //Coste real de recorrer las ciudades en el orden de ciudadesRecorridas
+	int distanciaOptimista;
+	int* ciudadesRecorridas; //Array con el orden en el que se tienen que recorrer las ciudades
+	bool* ciudadesUsadas; //True si esa ciudad ya ha sido explorada
+	int* datosExtra; //Puntero a informacion extra utilizada por el nodo (matriz cota buena)
+	int lengthDatosExtra;
+
+	Nodo(int numeroCiudades);
+	Nodo(const Nodo& aCopiar);
+	~Nodo();
+
+	Nodo& operator=(const Nodo& aCopiar);
+
+	struct comparator
+	{
+		//Funcion comparadora para crear una cola de minimos.
+		bool operator()(const Nodo& l, const Nodo& r)
+		{
+			return l.distanciaOptimista > r.distanciaOptimista;
+		}
+	};
+
+};

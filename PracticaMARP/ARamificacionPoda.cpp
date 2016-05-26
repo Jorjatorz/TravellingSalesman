@@ -28,7 +28,7 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 	Y.ciudadesRecorridas[0] = 0;
 	Y.ciudadesUsadas[0] = true;
 
-	informacionToReturn.distanciaOptima = _cPesimista.calcularCoste(Y.distanciaTotal, _mapa.getNumeroDeCiudades(), Y.ciudadesUsadas); //En nuestro problema siempre hay solucion (si no, esto valdria infinito)
+	informacionToReturn.distanciaOptima = _cPesimista.calcularCoste(Y); //En nuestro problema siempre hay solucion (si no, esto valdria infinito)
 	informacionToReturn.tiempoTotal = clock();
 
 	C.push(Y);
@@ -61,19 +61,20 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 					if (X.distanciaTotal < informacionToReturn.distanciaOptima) //Al principio, informacionToReturn.distanciaOptima es infinito
 					{
 						informacionToReturn.copiarSolucion(X, _mapa);
+
+						//informacionToReturn.print();
 					}
 				}
 				else //Si no es solucion
 				{
 					//Si es prometedor, seguir explorandolo
-					X.distanciaOptimista = _cOptimista.calcularCoste(X.distanciaTotal, _mapa.getNumeroDeCiudades(), X.ciudadesUsadas);
+					X.distanciaOptimista = _cOptimista.calcularCoste(X);
 					if (X.distanciaOptimista <= informacionToReturn.distanciaOptima)
 					{
 						C.push(X);
 					}
 
-					X.ciudadesUsadas[i] = false;
-					int cP = _cPesimista.calcularCoste(X.distanciaTotal, _mapa.getNumeroDeCiudades(), X.ciudadesUsadas);
+					int cP = _cPesimista.calcularCoste(X);
 					if (cP < informacionToReturn.distanciaOptima)
 					{
 						informacionToReturn.distanciaOptima = cP;
@@ -131,7 +132,7 @@ long long int ARamificacionPoda::sInfoAlgoritmo::calcularNodos()
 	return factorial(numCiudades - 1) * sum;
 }
 
-ARamificacionPoda::Nodo::Nodo(int numeroCiudades)
+Nodo::Nodo(int numeroCiudades)
 {
 	numCiudades = numeroCiudades;
 	k = 0;
@@ -140,9 +141,12 @@ ARamificacionPoda::Nodo::Nodo(int numeroCiudades)
 	ciudadesRecorridas = new int[numeroCiudades]; //Array con el orden en el que se tienen que recorrer las ciudades
 	ciudadesUsadas = new bool[numeroCiudades]; //True si esa ciudad ya ha sido explorada
 	memset(ciudadesUsadas, false, numeroCiudades * sizeof(bool));
+
+	datosExtra = nullptr;
+	lengthDatosExtra = 0;
 }
 
-ARamificacionPoda::Nodo::Nodo(const Nodo& aCopiar)
+Nodo::Nodo(const Nodo& aCopiar)
 {
 
 	numCiudades = aCopiar.numCiudades;
@@ -157,17 +161,44 @@ ARamificacionPoda::Nodo::Nodo(const Nodo& aCopiar)
 		memcpy(ciudadesRecorridas, aCopiar.ciudadesRecorridas, numCiudades * sizeof(int));
 		memcpy(ciudadesUsadas, aCopiar.ciudadesUsadas, numCiudades * sizeof(bool));
 	}
+
+	if (aCopiar.datosExtra != nullptr)
+	{
+		if (datosExtra != nullptr)
+		{
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			lengthDatosExtra = aCopiar.lengthDatosExtra;
+		}
+		else
+		{
+			datosExtra = new int[aCopiar.lengthDatosExtra];
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			lengthDatosExtra = aCopiar.lengthDatosExtra;
+		}
+	}
+	else
+	{
+		datosExtra = nullptr;
+		lengthDatosExtra = 0;
+	}
 }
 
-ARamificacionPoda::Nodo::~Nodo()
+Nodo::~Nodo()
 {
 	delete[] ciudadesRecorridas;
 	ciudadesRecorridas = nullptr;
 	delete[] ciudadesUsadas;
 	ciudadesUsadas = nullptr;
+	
+	if (datosExtra != nullptr)
+	{
+		delete[] datosExtra;
+		datosExtra = nullptr;
+		lengthDatosExtra = 0;
+	}
 }
 
-ARamificacionPoda::Nodo& ARamificacionPoda::Nodo::operator=(const Nodo& aCopiar)
+Nodo& Nodo::operator=(const Nodo& aCopiar)
 {
 	//Si la direccion del array es el mismo eso quiere decir que son el mismo nodo.
 	if (this->ciudadesRecorridas == aCopiar.ciudadesRecorridas) return *this;
@@ -181,6 +212,26 @@ ARamificacionPoda::Nodo& ARamificacionPoda::Nodo::operator=(const Nodo& aCopiar)
 	{		
 		memcpy(ciudadesRecorridas, aCopiar.ciudadesRecorridas, numCiudades * sizeof(int));
 		memcpy(ciudadesUsadas, aCopiar.ciudadesUsadas, numCiudades * sizeof(bool));
+	}
+
+	if (aCopiar.datosExtra != nullptr)
+	{
+		if (datosExtra != nullptr)
+		{
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			lengthDatosExtra = aCopiar.lengthDatosExtra;
+		}
+		else
+		{
+			datosExtra = new int[aCopiar.lengthDatosExtra];
+			memcpy(datosExtra, aCopiar.datosExtra, aCopiar.lengthDatosExtra);
+			lengthDatosExtra = aCopiar.lengthDatosExtra;
+		}
+	}
+	else
+	{
+		datosExtra = nullptr;
+		lengthDatosExtra = 0;
 	}
 
 	return *this;

@@ -13,7 +13,7 @@ public:
 	//Suma la distancia maximas de las ciudades aun sin elegir.
 	//Esta distancia maxima ha sido calculada anteriormente
 	//O(n)
-	virtual int calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[]) const;
+	virtual int calcularCoste(Nodo& X) const;
 
 private:
 	//Dado un mapa, calcula la distancia mayor de una ciudad a las demas.

@@ -1,5 +1,6 @@
 #include "ACota_Ingenua_Pesimista.h"
 
+#include "ARamificacionPoda.h"
 #include "Mapa.h"
 
 ACota_Ingenua_Pesimista::ACota_Ingenua_Pesimista(const Mapa& map)
@@ -14,15 +15,20 @@ ACota_Ingenua_Pesimista::~ACota_Ingenua_Pesimista()
 	delete[] _distanciasMaximas;
 }
 
-int ACota_Ingenua_Pesimista::calcularCoste(int distanciaActual, int numCiudades, bool ciudadUsada[]) const
+int ACota_Ingenua_Pesimista::calcularCoste(Nodo& X) const
 {
-	int suma = distanciaActual;
-	for (int i = 0; i < numCiudades; i++)
+	int suma = X.distanciaTotal;
+	for (int i = 0; i < X.numCiudades; i++)
 	{
-		if (!ciudadUsada[i])
+		if (!X.ciudadesUsadas[i])
 		{
 			suma += _distanciasMaximas[i];
 		}
+	}
+
+	if (X.k != 0)
+	{
+		suma += _distanciasMaximas[X.ciudadesRecorridas[X.k]]; //Anadir la distancia maxima de la ultima ciudad elegida
 	}
 
 	return suma;
