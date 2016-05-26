@@ -10,7 +10,7 @@
 
 int main(int argc, char* argv[])
 {
-	Mapa map(10, 25, true);
+	Mapa map(6, 25, true);
 
 	///////////////////////////////////////////////////////////////////////////////////////
 	ACota_Nula_Optimista cotaMala;
