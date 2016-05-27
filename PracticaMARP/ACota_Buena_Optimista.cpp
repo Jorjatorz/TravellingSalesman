@@ -23,21 +23,13 @@ int ACota_Buena_Optimista::calcularCoste(Nodo& X) const
 		//Calcular la cota y susbstraer minimos. En este caso no cancelamos la fila y la columna por ser la ciudad inicial
 		cota = calcularMinimos(X.datosExtra);
 	}
-	else if (X.datosExtra == nullptr)
-	{
-		generarMatrizDistancias(X.datosExtra, X.lengthDatosExtra);
-
-		//Hacer infinita la fila ciudadesRecorridas[k - 1] y la columna ciudadesRecorridas[k]
-		cancelarFilaColumna(X);
-		//Calcular la cota y susbstraer minimos
-		cota = X.distanciaOptimista + calcularMinimos(X.datosExtra) + _map.getDistanciaEntreCiudades(X.ciudadesRecorridas[X.k - 1], X.ciudadesRecorridas[X.k]);
-	}
 	else
 	{
+		int dist = X.datosExtra[X.ciudadesRecorridas[X.k - 1] * _map.getNumeroDeCiudades() + X.ciudadesRecorridas[X.k]];
 		//Hacer infinita la fila ciudadesRecorridas[k - 1] y la columna ciudadesRecorridas[k]
 		cancelarFilaColumna(X);
 		//Calcular la cota y susbstraer minimos
-		cota = X.distanciaOptimista + calcularMinimos(X.datosExtra) + _map.getDistanciaEntreCiudades(X.ciudadesRecorridas[X.k - 1], X.ciudadesRecorridas[X.k]);
+		cota = X.distanciaOptimista + dist + calcularMinimos(X.datosExtra);
 	}
 
 	return cota;
@@ -80,7 +72,7 @@ int ACota_Buena_Optimista::calcularMinimos(int* matriz) const
 		}
 
 		//Restar el minimo a la fila
-		if (min > 0)
+		if (min > 0 && min != INT_MAX)
 		{
 			for (int j = 0; j < _map.getNumeroDeCiudades(); j++)
 			{
@@ -110,7 +102,7 @@ int ACota_Buena_Optimista::calcularMinimos(int* matriz) const
 		}
 
 		//Restar el minimo a la columna
-		if (min > 0)
+		if (min > 0 && min != INT_MAX)
 		{
 			for (int i = 0; i < _map.getNumeroDeCiudades(); i++)
 			{
@@ -130,13 +122,17 @@ int ACota_Buena_Optimista::calcularMinimos(int* matriz) const
 	//Obtener los minimos y restarlos
 	for (int i = 0; i < _map.getNumeroDeCiudades(); i++)
 	{
-		coste = minimoFila(i);
+		int aux = minimoFila(i);
+		aux = aux == INT_MAX ? 0 : aux;
+		coste += aux;
 	}
 	//Columnas
 	//Obtener los minimos y restarlos
 	for (int j = 0; j < _map.getNumeroDeCiudades(); j++)
 	{
-		coste = minimoColumna(j);
+		int aux = minimoColumna(j);
+		aux = aux == INT_MAX ? 0 : aux;
+		coste += aux;
 	}
 
 
@@ -157,5 +153,7 @@ void ACota_Buena_Optimista::cancelarFilaColumna(Nodo& X) const
 	{
 		X.datosExtra[row * _map.getNumeroDeCiudades() + j] = INT_MAX;
 	}
+
+	X.datosExtra[col * _map.getNumeroDeCiudades() + row] = INT_MAX;
 }
 

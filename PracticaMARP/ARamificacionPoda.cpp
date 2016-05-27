@@ -27,6 +27,7 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 
 	Y.ciudadesRecorridas[0] = 0;
 	Y.ciudadesUsadas[0] = true;
+	Y.distanciaOptimista = _cOptimista.calcularCoste(Y);
 
 	informacionToReturn.distanciaOptima = _cPesimista.calcularCoste(Y); //En nuestro problema siempre hay solucion (si no, esto valdria infinito)
 	informacionToReturn.tiempoTotal = clock();
@@ -35,16 +36,15 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 	while (!C.empty() && C.top().distanciaOptimista <= informacionToReturn.distanciaOptima)
 	{
 		Y = C.top(); 
-		//Este nodo va a ser explorado
-		Nodo X(_mapa.getNumeroDeCiudades());
-		X = Y;
-
 		C.pop();
 
-		X.k++;
 		informacionToReturn.numNodosExplorados++;
 		for (int i = 1; i < _mapa.getNumeroDeCiudades(); i++)
 		{
+			//Este nodo va a ser explorado
+			Nodo X(_mapa.getNumeroDeCiudades());
+			X = Y;
+			X.k++;
 			//Si esta ciudad no ha sido usada con anterioridad
 			if (!X.ciudadesUsadas[i])
 			{

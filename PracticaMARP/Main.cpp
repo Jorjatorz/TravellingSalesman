@@ -10,7 +10,7 @@
 
 int main(int argc, char* argv[])
 {
-	Mapa map(6, 25, true);
+	Mapa map(14, 25, true);
 
 	///////////////////////////////////////////////////////////////////////////////////////
 	ACota_Nula_Optimista cotaMala;
@@ -31,13 +31,13 @@ int main(int argc, char* argv[])
 	ARamificacionPoda ag2(map, cotaIngenua, pesIngenua);
 
 	ARamificacionPoda::sInfoAlgoritmo resultado2 = ag2.ejecutarAlgoritmo();
-	 resultado2.print();
+	resultado2.print();
 
 	 std::cout << std::endl;
 	 ////////////////////////////////////////////////////////////
 	 ACota_Buena_Optimista cotaBuena(map);
 
-	 ARamificacionPoda ag3(map, cotaBuena, pesIngenua);
+	 ARamificacionPoda ag3(map, cotaBuena, pesMala);
 
 	 ARamificacionPoda::sInfoAlgoritmo resultado3 = ag3.ejecutarAlgoritmo();
 	 resultado3.print();
