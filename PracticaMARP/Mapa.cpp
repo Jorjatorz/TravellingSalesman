@@ -45,14 +45,14 @@ Mapa::Mapa(int n, int ciudadInicial, bool permutar)
 	if (!permutar)
 	{
 		_ciudadesElegidasArray = new int[n];
-		for (int i = 0; i < n; i++)
+		_ciudadesElegidasArray[0] = ciudadInicial;
+		for (int i = 1; i < n; i++)
 		{
 			if (i != ciudadInicial)
 			{
-				_ciudadesElegidasArray[i + 1] = i;
+				_ciudadesElegidasArray[i] = i;
 			}
 		}
-		_ciudadesElegidasArray[0] = ciudadInicial;
 	}
 	else
 	{

@@ -7,10 +7,11 @@
 #include "ACota_Ingenua_Optimista.h"
 #include "ACota_Ingenua_Pesimista.h"
 #include "ACota_Buena_Optimista.h"
+#include "ACota_Buena_Pesimista.h"
 
 int main(int argc, char* argv[])
 {
-	Mapa map(14, 25, true);
+	Mapa map(17, 25, false);
 
 	///////////////////////////////////////////////////////////////////////////////////////
 	ACota_Nula_Optimista cotaMala;
@@ -30,19 +31,30 @@ int main(int argc, char* argv[])
 
 	ARamificacionPoda ag2(map, cotaIngenua, pesIngenua);
 
-	ARamificacionPoda::sInfoAlgoritmo resultado2 = ag2.ejecutarAlgoritmo();
-	resultado2.print();
+	//ARamificacionPoda::sInfoAlgoritmo resultado2 = ag2.ejecutarAlgoritmo();
+	//resultado2.print();
 
 	 std::cout << std::endl;
 	 ////////////////////////////////////////////////////////////
 	 ACota_Buena_Optimista cotaBuena(map);
+	 ACota_Buena_Pesimista pesBuena(map);
 
-	 ARamificacionPoda ag3(map, cotaBuena, pesMala);
+	 ARamificacionPoda ag3(map, cotaBuena, pesBuena);
 
 	 ARamificacionPoda::sInfoAlgoritmo resultado3 = ag3.ejecutarAlgoritmo();
 	 resultado3.print();
 
 	 std::cout << std::endl;
+
+	 ////////////////////////////////////////////////////////////
+	 ARamificacionPoda ag4(map, cotaBuena, pesIngenua);
+
+	 ARamificacionPoda::sInfoAlgoritmo resultado4 = ag4.ejecutarAlgoritmo();
+	 resultado4.print();
+
+	 std::cout << std::endl;
+
+
 	system("Pause");
 	return 0;
 }

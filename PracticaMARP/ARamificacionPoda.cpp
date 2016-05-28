@@ -30,6 +30,7 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 	Y.distanciaOptimista = _cOptimista.calcularCoste(Y);
 
 	informacionToReturn.distanciaOptima = _cPesimista.calcularCoste(Y); //En nuestro problema siempre hay solucion (si no, esto valdria infinito)
+	std::cout << "CP: " << informacionToReturn.distanciaOptima << std::endl;
 	informacionToReturn.tiempoTotal = clock();
 
 	C.push(Y);
@@ -38,11 +39,12 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 		Y = C.top(); 
 		C.pop();
 
+		Nodo X(_mapa.getNumeroDeCiudades());
 		informacionToReturn.numNodosExplorados++;
 		for (int i = 1; i < _mapa.getNumeroDeCiudades(); i++)
 		{
 			//Este nodo va a ser explorado
-			Nodo X(_mapa.getNumeroDeCiudades());
+		
 			X = Y;
 			X.k++;
 			//Si esta ciudad no ha sido usada con anterioridad
@@ -61,8 +63,6 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 					if (X.distanciaTotal < informacionToReturn.distanciaOptima) //Al principio, informacionToReturn.distanciaOptima es infinito
 					{
 						informacionToReturn.copiarSolucion(X, _mapa);
-
-						//informacionToReturn.print();
 					}
 				}
 				else //Si no es solucion
@@ -77,6 +77,7 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 					int cP = _cPesimista.calcularCoste(X);
 					if (cP < informacionToReturn.distanciaOptima)
 					{
+						std::cout << "CP: " << cP << std::endl;
 						informacionToReturn.distanciaOptima = cP;
 					}
 				}
