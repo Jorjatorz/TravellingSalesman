@@ -28,9 +28,8 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 	Y.ciudadesRecorridas[0] = 0;
 	Y.ciudadesUsadas[0] = true;
 	Y.distanciaOptimista = _cOptimista.calcularCoste(Y);
-
 	informacionToReturn.distanciaOptima = _cPesimista.calcularCoste(Y); //En nuestro problema siempre hay solucion (si no, esto valdria infinito)
-	std::cout << "CP: " << informacionToReturn.distanciaOptima << std::endl;
+
 	informacionToReturn.tiempoTotal = clock();
 
 	C.push(Y);
@@ -43,8 +42,7 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 		informacionToReturn.numNodosExplorados++;
 		for (int i = 1; i < _mapa.getNumeroDeCiudades(); i++)
 		{
-			//Este nodo va a ser explorado
-		
+			//Este nodo va a ser explorado		
 			X = Y;
 			X.k++;
 			//Si esta ciudad no ha sido usada con anterioridad
@@ -77,7 +75,6 @@ ARamificacionPoda::sInfoAlgoritmo ARamificacionPoda::ejecutarAlgoritmo()
 					int cP = _cPesimista.calcularCoste(X);
 					if (cP < informacionToReturn.distanciaOptima)
 					{
-						std::cout << "CP: " << cP << std::endl;
 						informacionToReturn.distanciaOptima = cP;
 					}
 				}
@@ -104,7 +101,7 @@ void ARamificacionPoda::sInfoAlgoritmo::copiarSolucion(Nodo X, const Mapa& mapa)
 
 void ARamificacionPoda::sInfoAlgoritmo::print()
 {
-	long long int nodosTeoricos = calcularNodos();
+	long long int nodosTeoricos = calcularNodosTeoricos();
 	std::cout << "Numero de ciudades recorridas: " << numCiudades << std::endl;
 	std::cout << "Distancia optima: " << distanciaOptima << std::endl;
 	std::cout << "Ciclo de ciudades: " << recorridoCiudades << std::endl;
@@ -113,11 +110,11 @@ void ARamificacionPoda::sInfoAlgoritmo::print()
 	std::cout << "Numero nodos explorados al encontrar el optimo: " << numNodosExploradosOptima << std::endl;
 	std::cout << "Tiempo total del algoritmo: " << tiempoTotal << " segundos." << std::endl;
 	std::cout << "Tiempo medio por nodo explorado: " << tiempoMedioNodo << " segundos." << std::endl;
-	std::cout << "Tiempo total teorico del algoritmo: " << tiempoMedioNodo * nodosTeoricos << " segundos." << std::endl; //El tiempo medio que ha tardado un nodo por el numero de nodos totales (teoricos) a explorar.
+	std::cout << "Tiempo total teorico del algoritmo: " << 0.0000012f * nodosTeoricos << " segundos." << std::endl; //El tiempo medio que ha tardado un nodo por el numero de nodos totales (teoricos) a explorar. La contante utilizada ha sido obtenida ejecutando el algoritmo con la cota nula varias veces y haciendo la media (en modo release a traves del ejecutable).
 	std::cout << "Porcentaje mejora en tiempo del algoritmo: " << (1 - (tiempoTotal / (tiempoMedioNodo * nodosTeoricos))) * 100 << " %" << std::endl;
 }
 
-long long int ARamificacionPoda::sInfoAlgoritmo::calcularNodos()
+long long int ARamificacionPoda::sInfoAlgoritmo::calcularNodosTeoricos()
 {
 	std::function<int(int)> factorial = [&](int n)
 	{

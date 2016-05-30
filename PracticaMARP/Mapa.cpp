@@ -1,6 +1,7 @@
 #include "Mapa.h"
 #include <assert.h>
 #include <iostream>
+#include <ctime>
 
 const int Mapa::_DIST[28][28] = {
 	{},
@@ -56,6 +57,7 @@ Mapa::Mapa(int n, int ciudadInicial, bool permutar)
 	}
 	else
 	{
+		srand(time(NULL));
 		_ciudadesElegidasArray = new int[n];
 		//Elegimos ciudades aleatoriamente (que no hayan sido elegidas ya)
 		bool elegida[28];

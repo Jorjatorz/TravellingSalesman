@@ -8,11 +8,9 @@ ACota_Buena_Pesimista::ACota_Buena_Pesimista(const Mapa& map)
 {
 	int coste = 0;
 	bool* recorridas = new bool[_map.getNumeroDeCiudades()];
-	//memcpy(recorridas, X.ciudadesUsadas, sizeof(bool) * _map.getNumeroDeCiudades());
 	memset(recorridas, false, sizeof(bool) * _map.getNumeroDeCiudades());
+
 	coste = buscarMinimo(0, recorridas);
-
-
 
 	delete[] recorridas;
 	_cota = coste;

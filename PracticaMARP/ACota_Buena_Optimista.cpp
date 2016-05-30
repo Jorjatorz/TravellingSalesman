@@ -25,6 +25,7 @@ int ACota_Buena_Optimista::calcularCoste(Nodo& X) const
 	}
 	else
 	{
+		//Distancia de la ciudad anterior a la nueva usando la matriz del nodo antes de ser modificada
 		int dist = X.datosExtra[X.ciudadesRecorridas[X.k - 1] * _map.getNumeroDeCiudades() + X.ciudadesRecorridas[X.k]];
 		//Hacer infinita la fila ciudadesRecorridas[k - 1] y la columna ciudadesRecorridas[k]
 		cancelarFilaColumna(X);
@@ -57,6 +58,7 @@ void ACota_Buena_Optimista::generarMatrizDistancias(int*& matriz, int& sizeMatri
 
 int ACota_Buena_Optimista::calcularMinimos(int* matriz) const
 {
+	//Lamba funcion para calcular el minimo de una fila de la matriz
 	auto minimoFila = [&](int i)
 	{
 		//Obtener minimo
@@ -86,7 +88,7 @@ int ACota_Buena_Optimista::calcularMinimos(int* matriz) const
 
 		return min;
 	};
-
+	//Lamba funcion para calcular el minimo de una columna de la matriz
 	auto minimoColumna = [&](int j)
 	{
 		//Obtener minimo
@@ -141,6 +143,8 @@ int ACota_Buena_Optimista::calcularMinimos(int* matriz) const
 
 void ACota_Buena_Optimista::cancelarFilaColumna(Nodo& X) const
 {
+	//Elimina la fila (ciudad origen) y la columna (ciudad destino) de la matriz.
+	//En vez de eliminarlas fisicamente se hacen sus valores a infinito.
 	int row = X.ciudadesRecorridas[X.k - 1];
 	int col = X.ciudadesRecorridas[X.k];
 
@@ -154,6 +158,7 @@ void ACota_Buena_Optimista::cancelarFilaColumna(Nodo& X) const
 		X.datosExtra[row * _map.getNumeroDeCiudades() + j] = INT_MAX;
 	}
 
+	//Borrar tambien el simetrico (i, j) - (j, i)
 	X.datosExtra[col * _map.getNumeroDeCiudades() + row] = INT_MAX;
 }
 

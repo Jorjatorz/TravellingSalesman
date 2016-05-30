@@ -4,7 +4,7 @@
 
 class Mapa;
 
-//Reduced cost matrix
+//Cota que es calculada a traves de una Matriz de Coste Reducida almacenada como informacion adicional en cada nodo
 class ACota_Buena_Optimista: public ACota
 {
 public:
