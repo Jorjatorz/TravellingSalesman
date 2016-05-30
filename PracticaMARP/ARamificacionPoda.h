@@ -49,7 +49,7 @@ public:
 		void copiarSolucion(Nodo X, const Mapa& mapa);
 
 		void print();
-		long long int calcularNodos();
+		long long int calcularNodosTeoricos();
 	};
 
 	ARamificacionPoda(const Mapa& mapa, const ACota& optimista, const ACota& pesimita);

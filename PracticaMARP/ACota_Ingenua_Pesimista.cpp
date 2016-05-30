@@ -26,10 +26,7 @@ int ACota_Ingenua_Pesimista::calcularCoste(Nodo& X) const
 		}
 	}
 
-	if (X.k != 0)
-	{
-		suma += _distanciasMaximas[X.ciudadesRecorridas[X.k]]; //Anadir la distancia maxima de la ultima ciudad elegida
-	}
+	suma += _distanciasMaximas[X.ciudadesRecorridas[X.k]]; //Anadir la distancia maxima de la ultima ciudad elegida
 
 	return suma;
 }
